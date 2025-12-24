@@ -42,6 +42,10 @@
 #include <SDL3/SDL_iostream.h>
 #include <SDL3/SDL_joystick.h>
 
+#ifdef WEB_ENABLED
+#include <emscripten/html5.h>
+#endif
+
 // Macro to skip the SDL joystick event handling if the device is an SDL gamepad, because
 // there are separate events for SDL gamepads
 #define SKIP_EVENT_FOR_GAMEPAD \
@@ -68,6 +72,7 @@ Error JoypadSDL::initialize() {
 	// Add Godot's mapping database from memory
 	int i = 0;
 	while (DefaultControllerMappings::mappings[i]) {
+		// TODO: modify Godot Web mappings to match new SDL ones
 		String mapping_string = DefaultControllerMappings::mappings[i++];
 		CharString data = mapping_string.utf8();
 		SDL_IOStream *rw = SDL_IOFromMem((void *)data.ptr(), data.size());
@@ -169,6 +174,11 @@ void JoypadSDL::process_events() {
 
 				sdl_instance_id_to_joypad_id.insert(sdl_event.jdevice.which, joy_id);
 
+				if (should_ignore_joypad(sdl_event.jdevice.which)) {
+					close_joypad(joy_id);
+					continue;
+				}
+
 				Dictionary joypad_info;
 				// Skip Godot's mapping system if SDL already handles the joypad's mapping.
 				joypad_info["mapping_handled"] = SDL_IsGamepad(sdl_event.jdevice.which);
@@ -203,7 +213,11 @@ void JoypadSDL::process_events() {
 						joypads[joy_id].guid,
 						joypad_info);
 
+#ifndef WEB_ENABLED // Joypad features are not supported on the web.
 				Input::get_singleton()->set_joy_features(joy_id, &joypads[joy_id]);
+#else
+				// TODO: GUID compatibility for Godot
+#endif
 
 				if (joypads[joy_id].supports_motion_sensors) {
 					// Data rate for all sensors should be the same.
@@ -352,6 +366,22 @@ SDL_Joystick *JoypadSDL::Joypad::get_sdl_joystick() const {
 
 SDL_Gamepad *JoypadSDL::Joypad::get_sdl_gamepad() const {
 	return SDL_GetGamepadFromID(sdl_instance_idx);
+}
+
+bool JoypadSDL::should_ignore_joypad(SDL_JoystickID p_joy_id) {
+	SDL_Joystick *joy = SDL_GetJoystickFromID(p_joy_id);
+	String joy_name_lower = String(SDL_GetJoystickName(joy)).to_lower();
+
+#ifdef WEB_ENABLED
+	// DualSense on Firefox works very badly (input lag, no dpad, wrong face buttons, no vibration),
+	// I'm not sure it's fixable in Godot, so we just ignore it.
+	bool is_firefox = EM_ASM_INT({ return navigator.userAgent.toLowerCase().includes('firefox') });
+	if (is_firefox && joy_name_lower.contains("dualsense")) {
+		return true;
+	}
+#endif
+
+	return false;
 }
 
 #endif // SDL_ENABLED
