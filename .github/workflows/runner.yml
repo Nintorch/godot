@@ -6,6 +6,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  windows-build:
-    name: 🏁 Windows
-    uses: ./.github/workflows/windows_builds.yml
+  android-build:
+    name: 🤖 Android
+    uses: ./.github/workflows/android_builds.yml
+
+  #windows-build:
+  #  name: 🏁 Windows
+  #  uses: ./.github/workflows/windows_builds.yml
