@@ -81,6 +81,13 @@ void VirtualController::_notification(int p_notification) {
 			guide_button->connect("button_down", callable_mp(this, &VirtualController::_on_guide_button_pressed));
 			guide_button->connect("button_up", callable_mp(this, &VirtualController::_on_guide_button_released));
 		} break;
+
+		case NOTIFICATION_PROCESS: {
+			if (Engine::get_singleton()->is_editor_hint()) {
+				return;
+			}
+			set_visible(Input::get_singleton()->is_virtual_controller_enabled());
+		} break;
 	}
 }
 
@@ -255,6 +262,7 @@ VirtualController::VirtualController() {
 		return;
 	}
 
+	set_process(true);
 	set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
 
 	int margin = 20;

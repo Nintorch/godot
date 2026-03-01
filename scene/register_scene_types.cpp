@@ -561,7 +561,6 @@ void register_scene_types() {
 	GDREGISTER_CLASS(FoldableContainer);
 
 	GDREGISTER_CLASS(VirtualJoystick);
-	GDREGISTER_CLASS(VirtualController);
 
 	OS::get_singleton()->yield(); // may take time to init
 
