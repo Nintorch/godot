@@ -20,6 +20,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: Editor, 64-bit (target=editor, threads=yes, arch=wasm64)
+            cache-name: web-editor
+            target: editor
+            scons-flags: threads=yes arch=wasm64
+            artifact: true
+
           - name: Template w/ threads, 64-bit (target=template_release, threads=yes, arch=wasm64)
             cache-name: web-template
             target: template_release
