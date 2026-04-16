@@ -1221,13 +1221,13 @@ SConscript("servers/SCsub")
 SConscript("scene/SCsub")
 if env.editor_build:
     SConscript("editor/SCsub")
-SConscript("drivers/SCsub")
 
 SConscript("platform/SCsub")
 SConscript("modules/SCsub")
 if env["tests"]:
     SConscript("tests/SCsub")
 SConscript("main/SCsub")
+SConscript("drivers/SCsub")
 
 SConscript("platform/" + env["platform"] + "/SCsub")  # Build selected platform.
 
