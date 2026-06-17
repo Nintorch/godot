@@ -409,7 +409,7 @@ static void SDLCALL CleanupSurface(void *userdata, void *value)
 {
     SDL_Surface *surface = (SDL_Surface *)value;
 
-    SDL_DestroySurface(surface);
+    // SDL_DestroySurface(surface);
 }
 
 bool SDL_SetSurfaceProperty(SDL_PropertiesID props, const char *name, SDL_Surface *surface)

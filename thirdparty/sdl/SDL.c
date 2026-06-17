@@ -44,23 +44,23 @@
 #include "SDL_hints_c.h"
 #include "SDL_log_c.h"
 #include "SDL_properties_c.h"
-#include "audio/SDL_sysaudio.h"
-#include "camera/SDL_camera_c.h"
-#include "cpuinfo/SDL_cpuinfo_c.h"
+// #include "audio/SDL_sysaudio.h"
+// #include "camera/SDL_camera_c.h"
+// #include "cpuinfo/SDL_cpuinfo_c.h"
 #include "events/SDL_events_c.h"
 #include "haptic/SDL_haptic_c.h"
 #include "joystick/SDL_gamepad_c.h"
 #include "joystick/SDL_joystick_c.h"
-#include "render/SDL_sysrender.h"
+// #include "render/SDL_sysrender.h"
 #include "sensor/SDL_sensor_c.h"
 #include "stdlib/SDL_getenv_c.h"
 #include "thread/SDL_thread_c.h"
-#include "tray/SDL_tray_utils.h"
-#include "video/SDL_pixels_c.h"
-#include "video/SDL_surface_c.h"
-#include "video/SDL_video_c.h"
-#include "filesystem/SDL_filesystem_c.h"
-#include "io/SDL_asyncio_c.h"
+// #include "tray/SDL_tray_utils.h"
+// #include "video/SDL_pixels_c.h"
+// #include "video/SDL_surface_c.h"
+// #include "video/SDL_video_c.h"
+// #include "filesystem/SDL_filesystem_c.h"
+// #include "io/SDL_asyncio_c.h"
 #ifdef SDL_PLATFORM_ANDROID
 #include "core/android/SDL_android.h"
 #endif
@@ -301,7 +301,7 @@ void SDL_InitMainThread(void)
     SDL_InitTLSData();
     SDL_InitEnvironment();
     SDL_InitTicks();
-    SDL_InitFilesystem();
+    // SDL_InitFilesystem();
 
     if (!done_info) {
         const char *value;
@@ -320,7 +320,7 @@ void SDL_InitMainThread(void)
 
 static void SDL_QuitMainThread(void)
 {
-    SDL_QuitFilesystem();
+    // SDL_QuitFilesystem();
     SDL_QuitTicks();
     SDL_QuitEnvironment();
     SDL_QuitTLSData();
@@ -711,7 +711,7 @@ void SDL_Quit(void)
     SDL_HelperWindowDestroy();
 #endif
     SDL_QuitSubSystem(SDL_ALL_SUBSYSTEM_FLAGS);
-    SDL_CleanupTrays();
+    // SDL_CleanupTrays();
 
 #ifdef SDL_USE_LIBDBUS
     SDL_DBus_Quit();
@@ -722,14 +722,14 @@ void SDL_Quit(void)
 #endif
 
     SDL_QuitTimers();
-    SDL_QuitAsyncIO();
+    // SDL_QuitAsyncIO();
 
     SDL_SetObjectsInvalid();
     SDL_AssertionsQuit();
 
-    SDL_QuitPixelFormatDetails();
+    // SDL_QuitPixelFormatDetails();
 
-    SDL_QuitCPUInfo();
+    // SDL_QuitCPUInfo();
 
     /* Now that every subsystem has been quit, we reset the subsystem refcount
      * and the list of initialized subsystems.
