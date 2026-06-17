@@ -30,7 +30,7 @@ const char *SDL_GetAppID(void)
 
     if (!id_str) {
         // If the hint isn't set, try to use the application's executable name
-        id_str = SDL_GetExeName();
+        // id_str = SDL_GetExeName();
     }
 
     if (!id_str) {

@@ -46,9 +46,9 @@
 #include "../video/android/SDL_androidevents.h"
 #endif
 
-#ifdef SDL_PLATFORM_UNIX
-#include "../tray/SDL_tray_utils.h"
-#endif
+// #ifdef SDL_PLATFORM_UNIX
+// #include "../tray/SDL_tray_utils.h"
+// #endif
 
 // An arbitrary limit so we don't have unbounded growth
 #define SDL_MAX_QUEUED_EVENTS 65535
@@ -1484,9 +1484,9 @@ void SDL_PumpEventMaintenance(void)
     }
 #endif
 
-    SDL_SendPendingPenProximity();
+    // SDL_SendPendingPenProximity();
 
-    SDL_UpdateCursorAnimation();
+    // SDL_UpdateCursorAnimation();
 
     // SDL_UpdateTrays();
 

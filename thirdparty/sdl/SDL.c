@@ -30,9 +30,9 @@
 // this checks for HAVE_DBUS_DBUS_H internally.
 #include "core/linux/SDL_dbus.h"
 
-#if defined(SDL_PLATFORM_UNIX) && !defined(SDL_PLATFORM_ANDROID)
-#include "core/unix/SDL_gtk.h"
-#endif
+// #if defined(SDL_PLATFORM_UNIX) && !defined(SDL_PLATFORM_ANDROID)
+// #include "core/unix/SDL_gtk.h"
+// #endif
 
 #ifdef SDL_PLATFORM_EMSCRIPTEN
 #include <emscripten.h>
@@ -173,7 +173,7 @@ const char *SDL_GetAppMetadataProperty(const char *name)
     }
     if (!value || !*value) {
         if (SDL_strcmp(name, SDL_PROP_APP_METADATA_NAME_STRING) == 0) {
-            value = SDL_GetExeName();
+            // value = SDL_GetExeName();
             if (!value) {
                 value = "SDL Application";
             }
