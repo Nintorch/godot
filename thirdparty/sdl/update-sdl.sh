@@ -49,16 +49,20 @@ cp -v io/SDL_iostream*.{c,h} $target/io
 mkdir $target/core
 cp -rv core/{linux,unix,windows} $target/core
 rm -f $target/core/windows/version.rc
-rm -f $target/core/linux/SDL_{fcitx,ibus,ime,system_theme}.*
+rm -f $target/core/linux/SDL_{fcitx,ibus,ime,system_theme,progressbar}.*
+rm -f $target/core/unix/SDL_{fribidi,gtk,libthai}.*
 
 mkdir $target/haptic
-cp -rv haptic/{*.{c,h},darwin,dummy,linux,windows} $target/haptic
+cp -rv haptic/{*.{c,h},darwin,dummy,hidapi,linux,windows} $target/haptic
 
 mkdir $target/joystick
 cp -rv joystick/{*.{c,h},apple,darwin,hidapi,linux,windows} $target/joystick
 
 mkdir $target/loadso
 cp -rv loadso/{dlopen,dummy} $target/loadso
+
+mkdir $target/misc
+cp -v misc/SDL_libusb.{c,h} $target/misc
 
 mkdir $target/sensor
 cp -rv sensor/{*.{c,h},dummy,windows} $target/sensor

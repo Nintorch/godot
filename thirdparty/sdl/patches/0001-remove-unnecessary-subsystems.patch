@@ -868,3 +868,580 @@ index 02cc012f14..8954df4b9b 100644
      return false;
  }
  
+diff --git a/thirdparty/sdl/include/SDL3/SDL_render.h b/thirdparty/sdl/include/SDL3/SDL_render.h
+index 986130ce46..5ee509defa 100644
+--- a/thirdparty/sdl/include/SDL3/SDL_render.h
++++ b/thirdparty/sdl/include/SDL3/SDL_render.h
+@@ -59,7 +59,7 @@
+ #include <SDL3/SDL_rect.h>
+ #include <SDL3/SDL_surface.h>
+ #include <SDL3/SDL_video.h>
+-#include <SDL3/SDL_gpu.h>
++// #include <SDL3/SDL_gpu.h>
+ 
+ #include <SDL3/SDL_begin_code.h>
+ /* Set up for C function definitions, even when using C++ */
+@@ -384,7 +384,7 @@ extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateRendererWithProperties(SDL_
+  * \sa SDL_CreateGPURenderState
+  * \sa SDL_SetGPURenderState
+  */
+-extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateGPURenderer(SDL_GPUDevice *device, SDL_Window *window);
++// extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateGPURenderer(SDL_GPUDevice *device, SDL_Window *window);
+ 
+ /**
+  * Return the GPU device used by a renderer.
+diff --git a/thirdparty/sdl/include/SDL3/SDL_render.h b/thirdparty/sdl/include/SDL3/SDL_render.h
+index 5ee509defa..09f8626eca 100644
+--- a/thirdparty/sdl/include/SDL3/SDL_render.h
++++ b/thirdparty/sdl/include/SDL3/SDL_render.h
+@@ -397,7 +397,7 @@ extern SDL_DECLSPEC SDL_Renderer * SDLCALL SDL_CreateRendererWithProperties(SDL_
+  *
+  * \since This function is available since SDL 3.4.0.
+  */
+-extern SDL_DECLSPEC SDL_GPUDevice * SDLCALL SDL_GetGPURendererDevice(SDL_Renderer *renderer);
++// extern SDL_DECLSPEC SDL_GPUDevice * SDLCALL SDL_GetGPURendererDevice(SDL_Renderer *renderer);
+ 
+ /**
+  * Create a 2D software rendering context for a surface.
+@@ -2922,16 +2922,16 @@ extern SDL_DECLSPEC bool SDLCALL SDL_GetDefaultTextureScaleMode(SDL_Renderer *re
+  */
+ typedef struct SDL_GPURenderStateCreateInfo
+ {
+-    SDL_GPUShader *fragment_shader; /**< The fragment shader to use when this render state is active */
++    // SDL_GPUShader *fragment_shader; /**< The fragment shader to use when this render state is active */
+ 
+     Sint32 num_sampler_bindings;    /**< The number of additional fragment samplers to bind when this render state is active */
+-    const SDL_GPUTextureSamplerBinding *sampler_bindings;   /**< Additional fragment samplers to bind when this render state is active */
++    // const SDL_GPUTextureSamplerBinding *sampler_bindings;   /**< Additional fragment samplers to bind when this render state is active */
+ 
+     Sint32 num_storage_textures;    /**< The number of storage textures to bind when this render state is active */
+-    SDL_GPUTexture *const *storage_textures;    /**< Storage textures to bind when this render state is active */
++    // SDL_GPUTexture *const *storage_textures;    /**< Storage textures to bind when this render state is active */
+ 
+     Sint32 num_storage_buffers;     /**< The number of storage buffers to bind when this render state is active */
+-    SDL_GPUBuffer *const *storage_buffers;      /**< Storage buffers to bind when this render state is active */
++    // SDL_GPUBuffer *const *storage_buffers;      /**< Storage buffers to bind when this render state is active */
+ 
+     SDL_PropertiesID props;         /**< A properties ID for extensions. Should be 0 if no extensions are needed. */
+ } SDL_GPURenderStateCreateInfo;
+diff --git a/thirdparty/sdl/events/SDL_events.c b/thirdparty/sdl/events/SDL_events.c
+index 6e7c9221e5..a4de28ef7e 100644
+--- a/thirdparty/sdl/events/SDL_events.c
++++ b/thirdparty/sdl/events/SDL_events.c
+@@ -1484,9 +1484,9 @@ void SDL_PumpEventMaintenance(void)
+     }
+ #endif
+ 
+-    SDL_SendPendingPenProximity();
++    // SDL_SendPendingPenProximity();
+ 
+-    SDL_UpdateCursorAnimation();
++    // SDL_UpdateCursorAnimation();
+ 
+     // SDL_UpdateTrays();
+ 
+diff --git a/thirdparty/sdl/SDL.c b/thirdparty/sdl/SDL.c
+index d8e845057a..d1c0d3e728 100644
+--- a/thirdparty/sdl/SDL.c
++++ b/thirdparty/sdl/SDL.c
+@@ -30,9 +30,9 @@
+ // this checks for HAVE_DBUS_DBUS_H internally.
+ #include "core/linux/SDL_dbus.h"
+ 
+-#if defined(SDL_PLATFORM_UNIX) && !defined(SDL_PLATFORM_ANDROID)
+-#include "core/unix/SDL_gtk.h"
+-#endif
++// #if defined(SDL_PLATFORM_UNIX) && !defined(SDL_PLATFORM_ANDROID)
++// #include "core/unix/SDL_gtk.h"
++// #endif
+ 
+ #ifdef SDL_PLATFORM_EMSCRIPTEN
+ #include <emscripten.h>
+diff --git a/thirdparty/sdl/joystick/hidapi/SDL_hidapi_gip.c b/thirdparty/sdl/joystick/hidapi/SDL_hidapi_gip.c
+index 18df94e772..add4a9f16b 100644
+--- a/thirdparty/sdl/joystick/hidapi/SDL_hidapi_gip.c
++++ b/thirdparty/sdl/joystick/hidapi/SDL_hidapi_gip.c
+@@ -22,7 +22,7 @@
+ 
+ #ifdef SDL_JOYSTICK_HIDAPI
+ 
+-#include "../../events/SDL_keyboard_c.h"
++// #include "../../events/SDL_keyboard_c.h"
+ #include "../SDL_sysjoystick.h"
+ #include "SDL_hidapijoystick_c.h"
+ #include "SDL_hidapi_rumble.h"
+@@ -441,7 +441,7 @@ typedef struct GIP_Attachment
+     struct GIP_Device *device;
+     Uint8 attachment_index;
+     SDL_JoystickID joystick;
+-    SDL_KeyboardID keyboard;
++    // SDL_KeyboardID keyboard;
+ 
+     Uint8 fragment_message;
+     Uint16 total_length;
+@@ -1237,10 +1237,10 @@ static bool GIP_SendInitSequence(GIP_Attachment *attachment)
+     if ((!attachment->attachment_index || GIP_AttachmentIsController(attachment)) && !attachment->joystick) {
+         return HIDAPI_JoystickConnected(attachment->device->device, &attachment->joystick);
+     }
+-    if (attachment->attachment_type == GIP_TYPE_CHATPAD && !attachment->keyboard) {
+-        attachment->keyboard = (SDL_KeyboardID)(uintptr_t) attachment;
+-        SDL_AddKeyboard(attachment->keyboard, "Xbox One Chatpad");
+-    }
++    // if (attachment->attachment_type == GIP_TYPE_CHATPAD && !attachment->keyboard) {
++    //     attachment->keyboard = (SDL_KeyboardID)(uintptr_t) attachment;
++    //     SDL_AddKeyboard(attachment->keyboard, "Xbox One Chatpad");
++    // }
+     return true;
+ }
+ 
+@@ -1815,94 +1815,94 @@ static bool GIP_HandleCommandHidReport(
+     const Uint8 *bytes,
+     int num_bytes)
+ {
+-    Uint64 timestamp = SDL_GetTicksNS();
++    // Uint64 timestamp = SDL_GetTicksNS();
+     // SDL doesn't have HID descriptor parsing, so we have to hardcode for the Chatpad descriptor instead.
+     // I don't know of any other devices that emit HID reports, so this should be safe.
+-    if (attachment->attachment_type != GIP_TYPE_CHATPAD || !attachment->keyboard || num_bytes != 8) {
+-        SDL_LogDebug(SDL_LOG_CATEGORY_INPUT, "GIP: Unimplemented HID Report message");
+-        return false;
+-    }
+-
+-    Uint8 modifiers = bytes[0];
+-    Uint8 changed_modifiers = modifiers ^ attachment->last_modifiers;
+-    if (changed_modifiers & 0x02) {
+-        if (modifiers & 0x02) {
+-            SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_LSHIFT, true);
+-        } else {
+-            SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_LSHIFT, false);
+-        }
+-    }
++    // if (attachment->attachment_type != GIP_TYPE_CHATPAD || !attachment->keyboard || num_bytes != 8) {
++    //     SDL_LogDebug(SDL_LOG_CATEGORY_INPUT, "GIP: Unimplemented HID Report message");
++    //     return false;
++    // }
++
++    // Uint8 modifiers = bytes[0];
++    // Uint8 changed_modifiers = modifiers ^ attachment->last_modifiers;
++    // if (changed_modifiers & 0x02) {
++    //     if (modifiers & 0x02) {
++    //         SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_LSHIFT, true);
++    //     } else {
++    //         SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_LSHIFT, false);
++    //     }
++    // }
+     // The chatpad has several non-ASCII characters that it sends as Alt codes
+-    if (changed_modifiers & 0x04) {
+-        if (modifiers & 0x04) {
+-            attachment->altcode_digit = 0;
+-            attachment->altcode = 0;
+-        } else {
+-            if (attachment->altcode_digit == 4) {
+-                char utf8[4] = {0};
+-                // Some Alt codes don't match their Unicode codepoint for some reason
+-                switch (attachment->altcode) {
+-                case 128:
+-                    SDL_UCS4ToUTF8(0x20AC, utf8);
+-                    break;
+-                case 138:
+-                    SDL_UCS4ToUTF8(0x0160, utf8);
+-                    break;
+-                case 140:
+-                    SDL_UCS4ToUTF8(0x0152, utf8);
+-                    break;
+-                case 154:
+-                    SDL_UCS4ToUTF8(0x0161, utf8);
+-                    break;
+-                case 156:
+-                    SDL_UCS4ToUTF8(0x0153, utf8);
+-                    break;
+-                default:
+-                    SDL_UCS4ToUTF8(attachment->altcode, utf8);
+-                    break;
+-                }
+-                SDL_SendKeyboardText(utf8);
+-            }
+-            attachment->altcode_digit = -1;
+-            SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_NUMLOCKCLEAR, true);
+-            SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_NUMLOCKCLEAR, false);
+-        }
+-    }
+-
+-    if (!bytes[2] && attachment->last_key) {
+-        if (attachment->last_key == SDL_SCANCODE_CAPSLOCK) {
+-            attachment->capslock = !attachment->capslock;
+-        }
+-        SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, attachment->last_key, false);
+-        if (!(attachment->last_modifiers & 0xfd)) {
+-            SDL_Keycode keycode = SDL_GetKeymapKeycode(NULL,
+-                attachment->last_key,
+-                ((attachment->last_modifiers & 0x02) || attachment->capslock) ? SDL_KMOD_SHIFT : 0);
+-            if (keycode && keycode < 0x80) {
+-                char text[2] = { (char)keycode };
+-                SDL_SendKeyboardText(text);
+-            }
+-        }
+-        attachment->last_key = 0;
+-    } else {
+-        SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, bytes[2], true);
+-        attachment->last_key = bytes[2];
+-
+-        if ((modifiers & 0x04) && attachment->altcode_digit >= 0) {
+-            int digit = bytes[2] - SDL_SCANCODE_KP_1 + 1;
+-            if (digit < 1 || digit > 10) {
+-                attachment->altcode_digit = -1;
+-            } else {
+-                attachment->altcode_digit++;
+-                attachment->altcode *= 10;
+-                if (digit < 10) {
+-                    attachment->altcode += digit;
+-                }
+-            }
+-        }
+-    }
+-
+-    attachment->last_modifiers = modifiers;
++    // if (changed_modifiers & 0x04) {
++    //     if (modifiers & 0x04) {
++    //         attachment->altcode_digit = 0;
++    //         attachment->altcode = 0;
++    //     } else {
++    //         if (attachment->altcode_digit == 4) {
++    //             char utf8[4] = {0};
++    //             // Some Alt codes don't match their Unicode codepoint for some reason
++    //             switch (attachment->altcode) {
++    //             case 128:
++    //                 SDL_UCS4ToUTF8(0x20AC, utf8);
++    //                 break;
++    //             case 138:
++    //                 SDL_UCS4ToUTF8(0x0160, utf8);
++    //                 break;
++    //             case 140:
++    //                 SDL_UCS4ToUTF8(0x0152, utf8);
++    //                 break;
++    //             case 154:
++    //                 SDL_UCS4ToUTF8(0x0161, utf8);
++    //                 break;
++    //             case 156:
++    //                 SDL_UCS4ToUTF8(0x0153, utf8);
++    //                 break;
++    //             default:
++    //                 SDL_UCS4ToUTF8(attachment->altcode, utf8);
++    //                 break;
++    //             }
++    //             SDL_SendKeyboardText(utf8);
++    //         }
++    //         attachment->altcode_digit = -1;
++    //         SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_NUMLOCKCLEAR, true);
++    //         SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, SDL_SCANCODE_NUMLOCKCLEAR, false);
++    //     }
++    // }
++
++    // if (!bytes[2] && attachment->last_key) {
++    //     if (attachment->last_key == SDL_SCANCODE_CAPSLOCK) {
++    //         attachment->capslock = !attachment->capslock;
++    //     }
++    //     SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, attachment->last_key, false);
++    //     if (!(attachment->last_modifiers & 0xfd)) {
++    //         SDL_Keycode keycode = SDL_GetKeymapKeycode(NULL,
++    //             attachment->last_key,
++    //             ((attachment->last_modifiers & 0x02) || attachment->capslock) ? SDL_KMOD_SHIFT : 0);
++    //         if (keycode && keycode < 0x80) {
++    //             char text[2] = { (char)keycode };
++    //             SDL_SendKeyboardText(text);
++    //         }
++    //     }
++    //     attachment->last_key = 0;
++    // } else {
++    //     SDL_SendKeyboardKey(timestamp, attachment->keyboard, 0, bytes[2], true);
++    //     attachment->last_key = bytes[2];
++
++    //     if ((modifiers & 0x04) && attachment->altcode_digit >= 0) {
++    //         int digit = bytes[2] - SDL_SCANCODE_KP_1 + 1;
++    //         if (digit < 1 || digit > 10) {
++    //             attachment->altcode_digit = -1;
++    //         } else {
++    //             attachment->altcode_digit++;
++    //             attachment->altcode *= 10;
++    //             if (digit < 10) {
++    //                 attachment->altcode += digit;
++    //             }
++    //         }
++    //     }
++    // }
++
++    // attachment->last_modifiers = modifiers;
+     return true;
+ }
+ 
+@@ -2323,10 +2323,10 @@ static bool GIP_HandleSystemMessage(
+         // XXX If we reattach to a controller after it's been initialized, it might have
+         // attachments we don't know about. Try to figure out what this one is.
+         if (header->message_type == GIP_CMD_HID_REPORT && num_bytes == 8) {
+-            if (!attachment->keyboard) {
+-                attachment->keyboard = (SDL_KeyboardID)(uintptr_t) attachment;
+-                SDL_AddKeyboard(attachment->keyboard, "Xbox One Chatpad");
+-            }
++            // if (!attachment->keyboard) {
++            //     attachment->keyboard = (SDL_KeyboardID)(uintptr_t) attachment;
++            //     SDL_AddKeyboard(attachment->keyboard, "Xbox One Chatpad");
++            // }
+             attachment->attachment_type = GIP_TYPE_CHATPAD;
+             attachment->metadata.device.in_system_messages[0] |= (1u << GIP_CMD_HID_REPORT);
+         }
+@@ -2922,9 +2922,9 @@ static void HIDAPI_DriverGIP_FreeDevice(SDL_HIDAPI_Device *device)
+             SDL_free(attachment->fragment_data);
+             attachment->fragment_data = NULL;
+         }
+-        if (attachment->keyboard) {
+-            SDL_RemoveKeyboard(attachment->keyboard);
+-        }
++        // if (attachment->keyboard) {
++        //     SDL_RemoveKeyboard(attachment->keyboard);
++        // }
+         GIP_MetadataFree(&attachment->metadata);
+         SDL_free(attachment);
+         context->attachments[i] = NULL;
+diff --git a/thirdparty/sdl/core/windows/SDL_windows.c b/thirdparty/sdl/core/windows/SDL_windows.c
+index d011db38ea..aa26f039b1 100644
+--- a/thirdparty/sdl/core/windows/SDL_windows.c
++++ b/thirdparty/sdl/core/windows/SDL_windows.c
+@@ -24,7 +24,7 @@
+ 
+ #include "SDL_windows.h"
+ 
+-#include "../../video/SDL_surface_c.h"
++// #include "../../video/SDL_surface_c.h"
+ 
+ #include <shellapi.h> // CommandLineToArgvW()
+ 
+@@ -552,79 +552,79 @@ void WIN_UpdateDarkModeForHWND(HWND hwnd)
+ #endif
+ }
+ 
+-HICON WIN_CreateIconFromSurface(SDL_Surface *surface)
+-{
+-#if !(defined(SDL_PLATFORM_XBOXONE) || defined(SDL_PLATFORM_XBOXSERIES))
+-    SDL_Surface *s = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_ARGB8888);
+-    if (!s) {
+-        return NULL;
+-    }
+-
+-    /* The dimensions will be needed after s is freed */
+-    const int width = s->w;
+-    const int height = s->h;
+-
+-    BITMAPINFO bmpInfo;
+-    SDL_zero(bmpInfo);
+-    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+-    bmpInfo.bmiHeader.biWidth = width;
+-    bmpInfo.bmiHeader.biHeight = -height; /* Top-down bitmap */
+-    bmpInfo.bmiHeader.biPlanes = 1;
+-    bmpInfo.bmiHeader.biBitCount = 32;
+-    bmpInfo.bmiHeader.biCompression = BI_RGB;
+-
+-    HDC hdc = GetDC(NULL);
+-    void *pBits = NULL;
+-    HBITMAP hBitmap = CreateDIBSection(hdc, &bmpInfo, DIB_RGB_COLORS, &pBits, NULL, 0);
+-    if (!hBitmap) {
+-        ReleaseDC(NULL, hdc);
+-        SDL_DestroySurface(s);
+-        return NULL;
+-    }
+-
+-    SDL_memcpy(pBits, s->pixels, width * height * 4);
+-
+-    SDL_DestroySurface(s);
+-
+-    HBITMAP hMask = CreateBitmap(width, height, 1, 1, NULL);
+-    if (!hMask) {
+-        DeleteObject(hBitmap);
+-        ReleaseDC(NULL, hdc);
+-        return NULL;
+-    }
+-
+-    HDC hdcMem = CreateCompatibleDC(hdc);
+-    HGDIOBJ oldBitmap = SelectObject(hdcMem, hMask);
+-
+-    for (int y = 0; y < height; y++) {
+-        for (int x = 0; x < width; x++) {
+-            BYTE* pixel = (BYTE*)pBits + (y * width + x) * 4;
+-            BYTE alpha = pixel[3];
+-            COLORREF maskColor = (alpha == 0) ? RGB(0, 0, 0) : RGB(255, 255, 255);
+-            SetPixel(hdcMem, x, y, maskColor);
+-        }
+-    }
+-
+-    ICONINFO iconInfo;
+-    iconInfo.fIcon = TRUE;
+-    iconInfo.xHotspot = 0;
+-    iconInfo.yHotspot = 0;
+-    iconInfo.hbmMask = hMask;
+-    iconInfo.hbmColor = hBitmap;
+-
+-    HICON hIcon = CreateIconIndirect(&iconInfo);
+-
+-    SelectObject(hdcMem, oldBitmap);
+-    DeleteDC(hdcMem);
+-    DeleteObject(hBitmap);
+-    DeleteObject(hMask);
+-    ReleaseDC(NULL, hdc);
+-
+-    return hIcon;
+-#else
+-    return NULL;
+-#endif
+-}
++// HICON WIN_CreateIconFromSurface(SDL_Surface *surface)
++// {
++// #if !(defined(SDL_PLATFORM_XBOXONE) || defined(SDL_PLATFORM_XBOXSERIES))
++//     SDL_Surface *s = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_ARGB8888);
++//     if (!s) {
++//         return NULL;
++//     }
++
++//     /* The dimensions will be needed after s is freed */
++//     const int width = s->w;
++//     const int height = s->h;
++
++//     BITMAPINFO bmpInfo;
++//     SDL_zero(bmpInfo);
++//     bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
++//     bmpInfo.bmiHeader.biWidth = width;
++//     bmpInfo.bmiHeader.biHeight = -height; /* Top-down bitmap */
++//     bmpInfo.bmiHeader.biPlanes = 1;
++//     bmpInfo.bmiHeader.biBitCount = 32;
++//     bmpInfo.bmiHeader.biCompression = BI_RGB;
++
++//     HDC hdc = GetDC(NULL);
++//     void *pBits = NULL;
++//     HBITMAP hBitmap = CreateDIBSection(hdc, &bmpInfo, DIB_RGB_COLORS, &pBits, NULL, 0);
++//     if (!hBitmap) {
++//         ReleaseDC(NULL, hdc);
++//         SDL_DestroySurface(s);
++//         return NULL;
++//     }
++
++//     SDL_memcpy(pBits, s->pixels, width * height * 4);
++
++//     SDL_DestroySurface(s);
++
++//     HBITMAP hMask = CreateBitmap(width, height, 1, 1, NULL);
++//     if (!hMask) {
++//         DeleteObject(hBitmap);
++//         ReleaseDC(NULL, hdc);
++//         return NULL;
++//     }
++
++//     HDC hdcMem = CreateCompatibleDC(hdc);
++//     HGDIOBJ oldBitmap = SelectObject(hdcMem, hMask);
++
++//     for (int y = 0; y < height; y++) {
++//         for (int x = 0; x < width; x++) {
++//             BYTE* pixel = (BYTE*)pBits + (y * width + x) * 4;
++//             BYTE alpha = pixel[3];
++//             COLORREF maskColor = (alpha == 0) ? RGB(0, 0, 0) : RGB(255, 255, 255);
++//             SetPixel(hdcMem, x, y, maskColor);
++//         }
++//     }
++
++//     ICONINFO iconInfo;
++//     iconInfo.fIcon = TRUE;
++//     iconInfo.xHotspot = 0;
++//     iconInfo.yHotspot = 0;
++//     iconInfo.hbmMask = hMask;
++//     iconInfo.hbmColor = hBitmap;
++
++//     HICON hIcon = CreateIconIndirect(&iconInfo);
++
++//     SelectObject(hdcMem, oldBitmap);
++//     DeleteDC(hdcMem);
++//     DeleteObject(hBitmap);
++//     DeleteObject(hMask);
++//     ReleaseDC(NULL, hdc);
++
++//     return hIcon;
++// #else
++//     return NULL;
++// #endif
++// }
+ 
+ // Some GUIDs we need to know without linking to libraries that aren't available before Vista.
+ /* *INDENT-OFF* */ // clang-format off
+diff --git a/thirdparty/sdl/SDL.c b/thirdparty/sdl/SDL.c
+index d1c0d3e728..41216d3fd7 100644
+--- a/thirdparty/sdl/SDL.c
++++ b/thirdparty/sdl/SDL.c
+@@ -173,7 +173,7 @@ const char *SDL_GetAppMetadataProperty(const char *name)
+     }
+     if (!value || !*value) {
+         if (SDL_strcmp(name, SDL_PROP_APP_METADATA_NAME_STRING) == 0) {
+-            value = SDL_GetExeName();
++            // value = SDL_GetExeName();
+             if (!value) {
+                 value = "SDL Application";
+             }
+diff --git a/thirdparty/sdl/core/unix/SDL_appid.c b/thirdparty/sdl/core/unix/SDL_appid.c
+index 95c5dc1a6b..fd0037eb7e 100644
+--- a/thirdparty/sdl/core/unix/SDL_appid.c
++++ b/thirdparty/sdl/core/unix/SDL_appid.c
+@@ -30,7 +30,7 @@ const char *SDL_GetAppID(void)
+ 
+     if (!id_str) {
+         // If the hint isn't set, try to use the application's executable name
+-        id_str = SDL_GetExeName();
++        // id_str = SDL_GetExeName();
+     }
+ 
+     if (!id_str) {
+diff --git a/thirdparty/sdl/joystick/SDL_steam_virtual_gamepad.c b/thirdparty/sdl/joystick/SDL_steam_virtual_gamepad.c
+index 7d1ef1a890..23deb54a75 100644
+--- a/thirdparty/sdl/joystick/SDL_steam_virtual_gamepad.c
++++ b/thirdparty/sdl/joystick/SDL_steam_virtual_gamepad.c
+@@ -138,11 +138,11 @@ void SDL_InitSteamVirtualGamepadInfo(void)
+ #ifdef SDL_PLATFORM_LINUX
+         // Older versions of Wine will blacklist the Steam Virtual Gamepad if
+         // it appears to have the real controller's VID/PID, so ignore this.
+-        const char *exe = SDL_GetExeName();
+-        if (exe && SDL_strcmp(exe, "wine64-preloader") == 0) {
+-            SDL_LogDebug(SDL_LOG_CATEGORY_INPUT, "Wine launched by Steam, ignoring SteamVirtualGamepadInfo");
+-            return;
+-        }
++        // const char *exe = SDL_GetExeName();
++        // if (exe && SDL_strcmp(exe, "wine64-preloader") == 0) {
++        //     SDL_LogDebug(SDL_LOG_CATEGORY_INPUT, "Wine launched by Steam, ignoring SteamVirtualGamepadInfo");
++        //     return;
++        // }
+ #endif
+         SDL_steam_virtual_gamepad_info_file = SDL_strdup(file);
+     }
+diff --git a/thirdparty/sdl/core/windows/SDL_windows.c b/thirdparty/sdl/core/windows/SDL_windows.c
+index aa26f039b1..d22b8e04ae 100644
+--- a/thirdparty/sdl/core/windows/SDL_windows.c
++++ b/thirdparty/sdl/core/windows/SDL_windows.c
+@@ -534,7 +534,7 @@ void WIN_UpdateDarkModeForHWND(HWND hwnd)
+     if (ShouldAppsUseDarkModeFunc) {
+         value = ShouldAppsUseDarkModeFunc() ? TRUE : FALSE;
+     } else {
+-        value = (SDL_GetSystemTheme() == SDL_SYSTEM_THEME_DARK) ? TRUE : FALSE;
++        // value = (SDL_GetSystemTheme() == SDL_SYSTEM_THEME_DARK) ? TRUE : FALSE;
+     }
+     FreeLibrary(uxtheme);
+     if (!IsWindowsBuildVersionAtLeast(18362)) {
+diff --git a/thirdparty/sdl/events/SDL_events.c b/thirdparty/sdl/events/SDL_events.c
+index a4de28ef7e..1e8ee9d2cd 100644
+--- a/thirdparty/sdl/events/SDL_events.c
++++ b/thirdparty/sdl/events/SDL_events.c
+@@ -46,9 +46,9 @@
+ #include "../video/android/SDL_androidevents.h"
+ #endif
+ 
+-#ifdef SDL_PLATFORM_UNIX
+-#include "../tray/SDL_tray_utils.h"
+-#endif
++// #ifdef SDL_PLATFORM_UNIX
++// #include "../tray/SDL_tray_utils.h"
++// #endif
+ 
+ // An arbitrary limit so we don't have unbounded growth
+ #define SDL_MAX_QUEUED_EVENTS 65535

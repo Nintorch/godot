@@ -24,7 +24,7 @@
 
 #include "SDL_windows.h"
 
-#include "../../video/SDL_surface_c.h"
+// #include "../../video/SDL_surface_c.h"
 
 #include <shellapi.h> // CommandLineToArgvW()
 
@@ -534,7 +534,7 @@ void WIN_UpdateDarkModeForHWND(HWND hwnd)
     if (ShouldAppsUseDarkModeFunc) {
         value = ShouldAppsUseDarkModeFunc() ? TRUE : FALSE;
     } else {
-        value = (SDL_GetSystemTheme() == SDL_SYSTEM_THEME_DARK) ? TRUE : FALSE;
+        // value = (SDL_GetSystemTheme() == SDL_SYSTEM_THEME_DARK) ? TRUE : FALSE;
     }
     FreeLibrary(uxtheme);
     if (!IsWindowsBuildVersionAtLeast(18362)) {
@@ -552,79 +552,79 @@ void WIN_UpdateDarkModeForHWND(HWND hwnd)
 #endif
 }
 
-HICON WIN_CreateIconFromSurface(SDL_Surface *surface)
-{
-#if !(defined(SDL_PLATFORM_XBOXONE) || defined(SDL_PLATFORM_XBOXSERIES))
-    SDL_Surface *s = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_ARGB8888);
-    if (!s) {
-        return NULL;
-    }
+// HICON WIN_CreateIconFromSurface(SDL_Surface *surface)
+// {
+// #if !(defined(SDL_PLATFORM_XBOXONE) || defined(SDL_PLATFORM_XBOXSERIES))
+//     SDL_Surface *s = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_ARGB8888);
+//     if (!s) {
+//         return NULL;
+//     }
 
-    /* The dimensions will be needed after s is freed */
-    const int width = s->w;
-    const int height = s->h;
+//     /* The dimensions will be needed after s is freed */
+//     const int width = s->w;
+//     const int height = s->h;
 
-    BITMAPINFO bmpInfo;
-    SDL_zero(bmpInfo);
-    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    bmpInfo.bmiHeader.biWidth = width;
-    bmpInfo.bmiHeader.biHeight = -height; /* Top-down bitmap */
-    bmpInfo.bmiHeader.biPlanes = 1;
-    bmpInfo.bmiHeader.biBitCount = 32;
-    bmpInfo.bmiHeader.biCompression = BI_RGB;
+//     BITMAPINFO bmpInfo;
+//     SDL_zero(bmpInfo);
+//     bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+//     bmpInfo.bmiHeader.biWidth = width;
+//     bmpInfo.bmiHeader.biHeight = -height; /* Top-down bitmap */
+//     bmpInfo.bmiHeader.biPlanes = 1;
+//     bmpInfo.bmiHeader.biBitCount = 32;
+//     bmpInfo.bmiHeader.biCompression = BI_RGB;
 
-    HDC hdc = GetDC(NULL);
-    void *pBits = NULL;
-    HBITMAP hBitmap = CreateDIBSection(hdc, &bmpInfo, DIB_RGB_COLORS, &pBits, NULL, 0);
-    if (!hBitmap) {
-        ReleaseDC(NULL, hdc);
-        SDL_DestroySurface(s);
-        return NULL;
-    }
+//     HDC hdc = GetDC(NULL);
+//     void *pBits = NULL;
+//     HBITMAP hBitmap = CreateDIBSection(hdc, &bmpInfo, DIB_RGB_COLORS, &pBits, NULL, 0);
+//     if (!hBitmap) {
+//         ReleaseDC(NULL, hdc);
+//         SDL_DestroySurface(s);
+//         return NULL;
+//     }
 
-    SDL_memcpy(pBits, s->pixels, width * height * 4);
+//     SDL_memcpy(pBits, s->pixels, width * height * 4);
 
-    SDL_DestroySurface(s);
+//     SDL_DestroySurface(s);
 
-    HBITMAP hMask = CreateBitmap(width, height, 1, 1, NULL);
-    if (!hMask) {
-        DeleteObject(hBitmap);
-        ReleaseDC(NULL, hdc);
-        return NULL;
-    }
+//     HBITMAP hMask = CreateBitmap(width, height, 1, 1, NULL);
+//     if (!hMask) {
+//         DeleteObject(hBitmap);
+//         ReleaseDC(NULL, hdc);
+//         return NULL;
+//     }
 
-    HDC hdcMem = CreateCompatibleDC(hdc);
-    HGDIOBJ oldBitmap = SelectObject(hdcMem, hMask);
+//     HDC hdcMem = CreateCompatibleDC(hdc);
+//     HGDIOBJ oldBitmap = SelectObject(hdcMem, hMask);
 
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            BYTE* pixel = (BYTE*)pBits + (y * width + x) * 4;
-            BYTE alpha = pixel[3];
-            COLORREF maskColor = (alpha == 0) ? RGB(0, 0, 0) : RGB(255, 255, 255);
-            SetPixel(hdcMem, x, y, maskColor);
-        }
-    }
+//     for (int y = 0; y < height; y++) {
+//         for (int x = 0; x < width; x++) {
+//             BYTE* pixel = (BYTE*)pBits + (y * width + x) * 4;
+//             BYTE alpha = pixel[3];
+//             COLORREF maskColor = (alpha == 0) ? RGB(0, 0, 0) : RGB(255, 255, 255);
+//             SetPixel(hdcMem, x, y, maskColor);
+//         }
+//     }
 
-    ICONINFO iconInfo;
-    iconInfo.fIcon = TRUE;
-    iconInfo.xHotspot = 0;
-    iconInfo.yHotspot = 0;
-    iconInfo.hbmMask = hMask;
-    iconInfo.hbmColor = hBitmap;
+//     ICONINFO iconInfo;
+//     iconInfo.fIcon = TRUE;
+//     iconInfo.xHotspot = 0;
+//     iconInfo.yHotspot = 0;
+//     iconInfo.hbmMask = hMask;
+//     iconInfo.hbmColor = hBitmap;
 
-    HICON hIcon = CreateIconIndirect(&iconInfo);
+//     HICON hIcon = CreateIconIndirect(&iconInfo);
 
-    SelectObject(hdcMem, oldBitmap);
-    DeleteDC(hdcMem);
-    DeleteObject(hBitmap);
-    DeleteObject(hMask);
-    ReleaseDC(NULL, hdc);
+//     SelectObject(hdcMem, oldBitmap);
+//     DeleteDC(hdcMem);
+//     DeleteObject(hBitmap);
+//     DeleteObject(hMask);
+//     ReleaseDC(NULL, hdc);
 
-    return hIcon;
-#else
-    return NULL;
-#endif
-}
+//     return hIcon;
+// #else
+//     return NULL;
+// #endif
+// }
 
 // Some GUIDs we need to know without linking to libraries that aren't available before Vista.
 /* *INDENT-OFF* */ // clang-format off
