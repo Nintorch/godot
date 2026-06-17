@@ -29,7 +29,7 @@
 #include "SDL_steam_virtual_gamepad.h"
 
 #include "../events/SDL_events_c.h"
-#include "../video/SDL_sysvideo.h"
+// #include "../video/SDL_sysvideo.h"
 #include "../sensor/SDL_sensor_c.h"
 #include "hidapi/SDL_hidapijoystick_c.h"
 
@@ -1237,7 +1237,8 @@ static void AttemptSensorFusion(SDL_Joystick *joystick, bool invert_sensors)
        When a phone is being used as a gamepad, its orientation changes,
        so adjust sensor axes to match.
      */
-    if (SDL_GetNaturalDisplayOrientation(SDL_GetPrimaryDisplay()) == SDL_ORIENTATION_LANDSCAPE) {
+    // if (SDL_GetNaturalDisplayOrientation(SDL_GetPrimaryDisplay()) == SDL_ORIENTATION_LANDSCAPE) {
+    if (true) {
         /* When a device in landscape orientation is laid flat, the axes change
            orientation as follows:
             -X to +X becomes -X to +X
@@ -2307,10 +2308,10 @@ static bool SDL_PrivateJoystickShouldIgnoreEvent(void)
         return false;
     }
 
-    if (SDL_HasWindows() && SDL_GetKeyboardFocus() == NULL) {
-        // We have windows but we don't have focus, ignore the event.
-        return true;
-    }
+    // if (SDL_HasWindows() && SDL_GetKeyboardFocus() == NULL) {
+    //     // We have windows but we don't have focus, ignore the event.
+    //     return true;
+    // }
     return false;
 }
 

@@ -40,7 +40,7 @@
 #include <linux/input.h>
 
 #include "../../events/SDL_events_c.h"
-#include "../../events/SDL_scancode_tables_c.h"
+// #include "../../events/SDL_scancode_tables_c.h"
 #include "../../core/linux/SDL_evdev_capabilities.h"
 #include "../../core/linux/SDL_udev.h"
 
@@ -222,7 +222,7 @@ bool SDL_EVDEV_Init(void)
         SDL_EVDEV_UpdateKeyboardMute();
     }
 
-    SDL_GetMouse()->SetRelativeMouseMode = SDL_EVDEV_SetRelativeMouseMode;
+    // SDL_GetMouse()->SetRelativeMouseMode = SDL_EVDEV_SetRelativeMouseMode;
 
     _this->ref_count += 1;
 
@@ -325,7 +325,7 @@ void SDL_EVDEV_Poll(void)
 
     SDL_EVDEV_kbd_update(_this->kbd);
 
-    mouse = SDL_GetMouse();
+    mouse = NULL; //SDL_GetMouse();
 
     for (item = _this->first; item; item = item->next) {
         while ((len = read(item->fd, events, sizeof(events))) > 0) {
@@ -350,7 +350,7 @@ void SDL_EVDEV_Poll(void)
                     if (event->code >= BTN_MOUSE && event->code < BTN_MOUSE + SDL_arraysize(EVDEV_MouseButtons)) {
                         Uint64 timestamp = SDL_EVDEV_GetEventTimestamp(event);
                         mouse_button = event->code - BTN_MOUSE;
-                        SDL_SendMouseButton(timestamp, mouse->focus, (SDL_MouseID)item->fd, EVDEV_MouseButtons[mouse_button], (event->value != 0));
+                        // SDL_SendMouseButton(timestamp, mouse->focus, (SDL_MouseID)item->fd, EVDEV_MouseButtons[mouse_button], (event->value != 0));
                         break;
                     }
 
@@ -373,11 +373,11 @@ void SDL_EVDEV_Poll(void)
                     {
                         Uint64 timestamp = SDL_EVDEV_GetEventTimestamp(event);
                         scancode = SDL_EVDEV_translate_keycode(event->code);
-                        if (event->value == 0) {
-                            SDL_SendKeyboardKey(timestamp, (SDL_KeyboardID)item->fd, event->code, scancode, false);
-                        } else if (event->value == 1 || event->value == 2 /* key repeated */) {
-                            SDL_SendKeyboardKey(timestamp, (SDL_KeyboardID)item->fd, event->code, scancode, true);
-                        }
+                        // if (event->value == 0) {
+                            // SDL_SendKeyboardKey(timestamp, (SDL_KeyboardID)item->fd, event->code, scancode, false);
+                        // } else if (event->value == 1 || event->value == 2 /* key repeated */) {
+                            // SDL_SendKeyboardKey(timestamp, (SDL_KeyboardID)item->fd, event->code, scancode, true);
+                        // }
                         SDL_EVDEV_kbd_keycode(_this->kbd, event->code, event->value);
                     }
                     break;
@@ -492,36 +492,36 @@ void SDL_EVDEV_Poll(void)
                         if (item->relative_mouse) {
                             if (item->mouse_x != 0 || item->mouse_y != 0) {
                                 Uint64 timestamp = SDL_EVDEV_GetEventTimestamp(event);
-                                SDL_SendMouseMotion(timestamp, mouse->focus, (SDL_MouseID)item->fd, item->relative_mouse, (float)item->mouse_x, (float)item->mouse_y);
+                                // SDL_SendMouseMotion(timestamp, mouse->focus, (SDL_MouseID)item->fd, item->relative_mouse, (float)item->mouse_x, (float)item->mouse_y);
                                 item->mouse_x = item->mouse_y = 0;
                             }
                         } else if (item->range_x > 0 && item->range_y > 0) {
                             int screen_w = 0, screen_h = 0;
                             const SDL_DisplayMode *mode = NULL;
 
-                            if (mouse->focus) {
-                                mode = SDL_GetCurrentDisplayMode(SDL_GetDisplayForWindow(mouse->focus));
-                            }
-                            if (!mode) {
-                                mode = SDL_GetCurrentDisplayMode(SDL_GetPrimaryDisplay());
-                            }
+                            // if (mouse->focus) {
+                                // mode = SDL_GetCurrentDisplayMode(SDL_GetDisplayForWindow(mouse->focus));
+                            // }
+                            // if (!mode) {
+                                // mode = SDL_GetCurrentDisplayMode(SDL_GetPrimaryDisplay());
+                            // }
                             if (mode) {
                                 screen_w = mode->w;
                                 screen_h = mode->h;
                             }
-                            SDL_SendMouseMotion(SDL_EVDEV_GetEventTimestamp(event), mouse->focus, (SDL_MouseID)item->fd, item->relative_mouse,
-                                (float)(item->mouse_x - item->min_x) * screen_w / item->range_x,
-                                (float)(item->mouse_y - item->min_y) * screen_h / item->range_y);
+                            // SDL_SendMouseMotion(SDL_EVDEV_GetEventTimestamp(event), mouse->focus, (SDL_MouseID)item->fd, item->relative_mouse,
+                                // (float)(item->mouse_x - item->min_x) * screen_w / item->range_x,
+                                // (float)(item->mouse_y - item->min_y) * screen_h / item->range_y);
                         }
 
                         if (item->mouse_wheel != 0 || item->mouse_hwheel != 0) {
                             Uint64 timestamp = SDL_EVDEV_GetEventTimestamp(event);
                             const float denom = (item->high_res_hwheel ? 120.0f : 1.0f);
-                            SDL_SendMouseWheel(timestamp,
-                                               mouse->focus, (SDL_MouseID)item->fd,
-                                               item->mouse_hwheel / denom,
-                                               item->mouse_wheel / denom,
-                                               SDL_MOUSEWHEEL_NORMAL);
+                            // SDL_SendMouseWheel(timestamp,
+                                            //    mouse->focus, (SDL_MouseID)item->fd,
+                                            //    item->mouse_hwheel / denom,
+                                            //    item->mouse_wheel / denom,
+                                            //    SDL_MOUSEWHEEL_NORMAL);
                             item->mouse_wheel = item->mouse_hwheel = 0;
                         }
 
@@ -548,16 +548,16 @@ void SDL_EVDEV_Poll(void)
                              * be window-relative in that case. */
                             switch (item->touchscreen_data->slots[j].delta) {
                             case EVDEV_TOUCH_SLOTDELTA_DOWN:
-                                SDL_SendTouch(SDL_EVDEV_GetEventTimestamp(event), item->fd, item->touchscreen_data->slots[j].tracking_id, mouse->focus, SDL_EVENT_FINGER_DOWN, norm_x, norm_y, norm_pressure);
+                                // SDL_SendTouch(SDL_EVDEV_GetEventTimestamp(event), item->fd, item->touchscreen_data->slots[j].tracking_id, mouse->focus, SDL_EVENT_FINGER_DOWN, norm_x, norm_y, norm_pressure);
                                 item->touchscreen_data->slots[j].delta = EVDEV_TOUCH_SLOTDELTA_NONE;
                                 break;
                             case EVDEV_TOUCH_SLOTDELTA_UP:
-                                SDL_SendTouch(SDL_EVDEV_GetEventTimestamp(event), item->fd, item->touchscreen_data->slots[j].tracking_id, mouse->focus, SDL_EVENT_FINGER_UP, norm_x, norm_y, norm_pressure);
+                                // SDL_SendTouch(SDL_EVDEV_GetEventTimestamp(event), item->fd, item->touchscreen_data->slots[j].tracking_id, mouse->focus, SDL_EVENT_FINGER_UP, norm_x, norm_y, norm_pressure);
                                 item->touchscreen_data->slots[j].tracking_id = 0;
                                 item->touchscreen_data->slots[j].delta = EVDEV_TOUCH_SLOTDELTA_NONE;
                                 break;
                             case EVDEV_TOUCH_SLOTDELTA_MOVE:
-                                SDL_SendTouchMotion(SDL_EVDEV_GetEventTimestamp(event), item->fd, item->touchscreen_data->slots[j].tracking_id, mouse->focus, norm_x, norm_y, norm_pressure);
+                                // SDL_SendTouchMotion(SDL_EVDEV_GetEventTimestamp(event), item->fd, item->touchscreen_data->slots[j].tracking_id, mouse->focus, norm_x, norm_y, norm_pressure);
                                 item->touchscreen_data->slots[j].delta = EVDEV_TOUCH_SLOTDELTA_NONE;
                                 break;
                             default:
@@ -587,7 +587,7 @@ void SDL_EVDEV_Poll(void)
 
 static SDL_Scancode SDL_EVDEV_translate_keycode(int keycode)
 {
-    SDL_Scancode scancode = SDL_GetScancodeFromTable(SDL_SCANCODE_TABLE_LINUX, keycode);
+    // SDL_Scancode scancode = SDL_GetScancodeFromTable(SDL_SCANCODE_TABLE_LINUX, keycode);
 
 #ifdef DEBUG_SCANCODES
     if (scancode == SDL_SCANCODE_UNKNOWN) {
@@ -604,7 +604,7 @@ static SDL_Scancode SDL_EVDEV_translate_keycode(int keycode)
     }
 #endif // DEBUG_SCANCODES
 
-    return scancode;
+    return 0; // scancode;
 }
 
 static bool SDL_EVDEV_init_keyboard(SDL_evdevlist_item *item, int udev_class)
@@ -614,14 +614,14 @@ static bool SDL_EVDEV_init_keyboard(SDL_evdevlist_item *item, int udev_class)
     name[0] = '\0';
     ioctl(item->fd, EVIOCGNAME(sizeof(name)), name);
 
-    SDL_AddKeyboard((SDL_KeyboardID)item->fd, name);
+    // SDL_AddKeyboard((SDL_KeyboardID)item->fd, name);
 
     return true;
 }
 
 static void SDL_EVDEV_destroy_keyboard(SDL_evdevlist_item *item)
 {
-    SDL_RemoveKeyboard((SDL_KeyboardID)item->fd);
+    // SDL_RemoveKeyboard((SDL_KeyboardID)item->fd);
 }
 
 static bool SDL_EVDEV_init_mouse(SDL_evdevlist_item *item, int udev_class)
@@ -633,7 +633,7 @@ static bool SDL_EVDEV_init_mouse(SDL_evdevlist_item *item, int udev_class)
     name[0] = '\0';
     ioctl(item->fd, EVIOCGNAME(sizeof(name)), name);
 
-    SDL_AddMouse((SDL_MouseID)item->fd, name);
+    // SDL_AddMouse((SDL_MouseID)item->fd, name);
 
     ret = ioctl(item->fd, EVIOCGABS(ABS_X), &abs_info);
     if (ret < 0) {
@@ -658,7 +658,7 @@ static bool SDL_EVDEV_init_mouse(SDL_evdevlist_item *item, int udev_class)
 
 static void SDL_EVDEV_destroy_mouse(SDL_evdevlist_item *item)
 {
-    SDL_RemoveMouse((SDL_MouseID)item->fd);
+    // SDL_RemoveMouse((SDL_MouseID)item->fd);
 }
 
 static bool SDL_EVDEV_init_touchscreen(SDL_evdevlist_item *item, int udev_class)
@@ -750,9 +750,10 @@ static bool SDL_EVDEV_init_touchscreen(SDL_evdevlist_item *item, int udev_class)
         return false;
     }
 
-    ret = SDL_AddTouch(item->fd, // I guess our fd is unique enough
-                       (udev_class & SDL_UDEV_DEVICE_TOUCHPAD) ? SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE : SDL_TOUCH_DEVICE_DIRECT,
-                       item->touchscreen_data->name);
+    // ret = SDL_AddTouch(item->fd, // I guess our fd is unique enough
+                    //    (udev_class & SDL_UDEV_DEVICE_TOUCHPAD) ? SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE : SDL_TOUCH_DEVICE_DIRECT,
+                    //    item->touchscreen_data->name);
+    ret = -1;
     if (ret < 0) {
         SDL_free(item->touchscreen_data->slots);
         SDL_free(item->touchscreen_data->name);
@@ -769,7 +770,7 @@ static void SDL_EVDEV_destroy_touchscreen(SDL_evdevlist_item *item)
         return;
     }
 
-    SDL_DelTouch(item->fd);
+    // SDL_DelTouch(item->fd);
     SDL_free(item->touchscreen_data->slots);
     SDL_free(item->touchscreen_data->name);
     SDL_free(item->touchscreen_data);

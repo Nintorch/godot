@@ -25,7 +25,7 @@
 #endif
 
 #include "SDL_assert_c.h"
-#include "video/SDL_sysvideo.h"
+// #include "video/SDL_sysvideo.h"
 
 #if defined(SDL_PLATFORM_WINDOWS)
 #ifndef WS_OVERLAPPEDWINDOW
@@ -197,16 +197,16 @@ static SDL_AssertState SDLCALL SDL_PromptAssertion(const SDL_AssertData *data, v
     }
 
     // Leave fullscreen mode, if possible (scary!)
-    window = SDL_GetToplevelForKeyboardFocus();
-    if (window) {
-        if (window->fullscreen_exclusive) {
-            SDL_MinimizeWindow(window);
-        } else {
-            // !!! FIXME: ungrab the input if we're not fullscreen?
-            // No need to mess with the window
-            window = NULL;
-        }
-    }
+    // window = SDL_GetToplevelForKeyboardFocus();
+    // if (window) {
+    //     if (window->fullscreen_exclusive) {
+    //         SDL_MinimizeWindow(window);
+    //     } else {
+    //         // !!! FIXME: ungrab the input if we're not fullscreen?
+    //         // No need to mess with the window
+    //         window = NULL;
+    //     }
+    // }
 
     // Show a messagebox if we can, otherwise fall back to stdio
     SDL_zero(messagebox);
@@ -217,7 +217,8 @@ static SDL_AssertState SDLCALL SDL_PromptAssertion(const SDL_AssertData *data, v
     messagebox.numbuttons = SDL_arraysize(buttons);
     messagebox.buttons = buttons;
 
-    if (SDL_ShowMessageBox(&messagebox, &selected)) {
+    // if (SDL_ShowMessageBox(&messagebox, &selected)) {
+    if (false) {
         if (selected == -1) {
             state = SDL_ASSERTION_IGNORE;
         } else {
@@ -298,13 +299,13 @@ static SDL_AssertState SDLCALL SDL_PromptAssertion(const SDL_AssertData *data, v
             }
         }
 #else
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Assertion Failed", message, window);
+        // SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Assertion Failed", message, window);
 #endif // SDL_PLATFORM_PRIVATE_ASSERT
     }
 
     // Re-enter fullscreen mode
     if (window) {
-        SDL_RestoreWindow(window);
+        // SDL_RestoreWindow(window);
     }
 
     if (message != stack_buf) {
