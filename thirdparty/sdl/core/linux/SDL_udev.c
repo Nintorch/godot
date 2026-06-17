@@ -53,7 +53,9 @@ SDL_ELF_NOTE_DLOPEN(
     SDL_UDEV_DLNOTE_LIBS
 )
 
-static SDL_UDEV_PrivateData *_this = NULL;
+// static SDL_UDEV_PrivateData *_this = NULL;
+SDL_UDEV_PrivateData *SDL_UDEV_PrivateData_this = NULL;
+#define _this SDL_UDEV_PrivateData_this
 
 static bool SDL_UDEV_load_sym(const char *fn, void **addr);
 static bool SDL_UDEV_load_syms(void);
