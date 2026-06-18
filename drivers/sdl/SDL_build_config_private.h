@@ -45,8 +45,6 @@
 #define SDL_VIDEO_DISABLED 1
 #define SDL_CAMERA_DISABLED 1
 #define SDL_DIALOG_DISABLED 1
-#define SDL_FILESYSTEM_DUMMY 1
-#define SDL_FSOPS_DUMMY 1
 #define SDL_GPU_DISABLED 1
 #define SDL_RENDER_DISABLED 1
 #define SDL_POWER_DISABLED 1
@@ -73,6 +71,8 @@
 #define SDL_THREAD_WINDOWS 1
 #define SDL_TIMER_WINDOWS 1
 #define SDL_SENSOR_WINDOWS 1
+#define SDL_FILESYSTEM_WINDOWS 1 // Used by thirdparty/sdl/joystick/windows/SDL_dinputjoystick.c
+#define SDL_FSOPS_WINDOWS 1
 
 // Linux defines
 #elif defined(SDL_PLATFORM_LINUX)
@@ -116,6 +116,8 @@
 #define SDL_JOYSTICK_HIDAPI 1
 #define SDL_INPUT_LINUXEV 1
 #define SDL_THREAD_PTHREAD 1
+#define SDL_FILESYSTEM_DUMMY 1
+#define SDL_FSOPS_DUMMY 1
 
 // macOS defines
 #elif defined(SDL_PLATFORM_MACOS)
@@ -131,6 +133,8 @@
 #define SDL_TIMER_UNIX 1
 #define SDL_THREAD_PTHREAD 1
 #define SDL_THREAD_PTHREAD_RECURSIVE_MUTEX 1
+#define SDL_FILESYSTEM_DUMMY 1
+#define SDL_FSOPS_DUMMY 1
 
 // iOS/visionOS defines
 #elif defined(SDL_PLATFORM_IOS) || defined(SDL_PLATFORM_VISIONOS)
@@ -150,6 +154,8 @@
 #define SDL_HAPTIC_DUMMY 1
 #define SDL_TIMER_UNIX 1
 #define SDL_THREAD_PTHREAD 1
+#define SDL_FILESYSTEM_DUMMY 1
+#define SDL_FSOPS_DUMMY 1
 
 #define SDL_MAIN_HANDLED 1
 
