@@ -19,25 +19,11 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "SDL_internal.h"
+#ifndef SDL_filesystem_c_h_
+#define SDL_filesystem_c_h_
 
-#ifndef SDL_libthai_h_
-#define SDL_libthai_h_
+extern void SDL_InitFilesystem(void);
+extern void SDL_QuitFilesystem(void);
 
-#ifdef HAVE_LIBTHAI_H
-#include <thai/thcell.h>
+#endif
 
-typedef size_t (*SDL_LibThaiMakeCells)(const thchar_t *s, size_t, struct thcell_t cells[], size_t *, int);
-
-typedef struct SDL_LibThai {
-    SDL_SharedObject *lib;
- 
-    SDL_LibThaiMakeCells make_cells;
-} SDL_LibThai;
-
-extern SDL_LibThai *SDL_LibThai_Create(void);
-extern void SDL_LibThai_Destroy(SDL_LibThai *th);
-
-#endif // HAVE_LIBTHAI_H
-
-#endif // SDL_libthai_h_

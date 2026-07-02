@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-VERSION=3.4.10
+VERSION=3.4.12
 
 target=$(dirname "$(realpath $0)")
 pushd $target
@@ -49,16 +49,23 @@ cp -v io/SDL_iostream*.{c,h} $target/io
 mkdir $target/core
 cp -rv core/{linux,unix,windows} $target/core
 rm -f $target/core/windows/version.rc
-rm -f $target/core/linux/SDL_{fcitx,ibus,ime,system_theme}.*
+rm -f $target/core/linux/SDL_{fcitx,ibus,ime,system_theme,progressbar}.*
+rm -f $target/core/unix/SDL_{fribidi,gtk,libthai}.*
+
+mkdir $target/filesystem
+cp -rv filesystem/{*.{c,h},windows} $target/filesystem
 
 mkdir $target/haptic
-cp -rv haptic/{*.{c,h},darwin,dummy,linux,windows} $target/haptic
+cp -rv haptic/{*.{c,h},darwin,dummy,hidapi,linux,windows} $target/haptic
 
 mkdir $target/joystick
 cp -rv joystick/{*.{c,h},apple,darwin,hidapi,linux,windows} $target/joystick
 
 mkdir $target/loadso
 cp -rv loadso/{dlopen,dummy} $target/loadso
+
+mkdir $target/misc
+cp -v misc/SDL_libusb.{c,h} $target/misc
 
 mkdir $target/sensor
 cp -rv sensor/{*.{c,h},dummy,windows} $target/sensor
@@ -70,6 +77,9 @@ cp -rv thread/{*.{c,h},pthread,windows} $target/thread
 # systhread_c.h is included by all these, but we should NOT compile the matching .c file.
 mkdir $target/thread/generic
 cp -v thread/generic/SDL_{syssem.c,{syscond,sysrwlock}*.{c,h},systhread_c.h} $target/thread/generic
+
+mkdir $target/time
+cp -v time/*.{c,h} $target/time
 
 mkdir $target/timer
 cp -rv timer/{*.{c,h},unix,windows} $target/timer
