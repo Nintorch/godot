@@ -66,7 +66,7 @@ bool SDL_GetDateTimeLocalePreferences(SDL_DateFormat *dateFormat, SDL_TimeFormat
         *timeFormat = SDL_TIME_FORMAT_24HR;
     }
 
-    SDL_GetSystemTimeLocalePreferences(dateFormat, timeFormat);
+    // SDL_GetSystemTimeLocalePreferences(dateFormat, timeFormat);
 
     return true;
 }
