@@ -407,22 +407,6 @@ void JoypadSDL::Joypad::remove_joy_haptic_effect(int p_effect_id) {
 	SDL_DestroyHapticEffect(haptic, p_effect_id);
 }
 
-static const uint16_t sdl_haptic_types[] = {
-	SDL_HAPTIC_CONSTANT, // HAPTIC_EFFECT_CONSTANT
-	SDL_HAPTIC_SINE, // HAPTIC_EFFECT_SINE
-	SDL_HAPTIC_SQUARE, // HAPTIC_EFFECT_SQUARE
-	SDL_HAPTIC_TRIANGLE, // HAPTIC_EFFECT_TRIANGLE
-	SDL_HAPTIC_SAWTOOTHUP, // HAPTIC_EFFECT_SAWTOOTH_UP
-	SDL_HAPTIC_SAWTOOTHDOWN, // HAPTIC_EFFECT_SAWTOOTH_DOWN
-	SDL_HAPTIC_RAMP, // HAPTIC_EFFECT_RAMP
-	SDL_HAPTIC_SPRING, // HAPTIC_EFFECT_SPRING
-	SDL_HAPTIC_DAMPER, // HAPTIC_EFFECT_DAMPER
-	SDL_HAPTIC_INERTIA, // HAPTIC_EFFECT_INERTIA
-	SDL_HAPTIC_FRICTION, // HAPTIC_EFFECT_FRICTION
-	SDL_HAPTIC_LEFTRIGHT, // HAPTIC_EFFECT_LEFT_RIGHT
-	SDL_HAPTIC_CUSTOM, // HAPTIC_EFFECT_CUSTOM
-};
-
 #define HAPTIC_SETUP_ENVELOPE(m_effect) \
 	p_sdl_effect->m_effect.attack_length = m_effect.get_attack_length() * 1000; \
 	p_sdl_effect->m_effect.attack_level = m_effect.get_attack_level() * UINT16_MAX; \
@@ -434,7 +418,9 @@ static const uint16_t sdl_haptic_types[] = {
 	m_property[1] = (m_vector).y; \
 	m_property[2] = (m_vector).z;
 
-#define HAPTIC_SETUP_VECTOR2(m_property, m_vector) HAPTIC_SETUP_VECTOR(m_property, ((m_vector) * UINT16_MAX).operator Vector3i())
+#define HAPTIC_SETUP_VECTOR_UINT16(m_property, m_vector) HAPTIC_SETUP_VECTOR(m_property, ((m_vector) * UINT16_MAX).operator Vector3i())
+
+#define HAPTIC_SETUP_VECTOR_INT16(m_property, m_vector) HAPTIC_SETUP_VECTOR(m_property, ((m_vector) * INT16_MAX).operator Vector3i())
 
 bool JoypadSDL::Joypad::setup_sdl_haptic_effect(SDL_HapticEffect *p_sdl_effect, const InputHapticEffect &p_effect, Vector<uint16_t> &r_custom_data) {
 	InputHapticEffect::Type type = p_effect.get_effect_type();
@@ -444,7 +430,7 @@ bool JoypadSDL::Joypad::setup_sdl_haptic_effect(SDL_HapticEffect *p_sdl_effect, 
 	}
 
 	SDL_memset(p_sdl_effect, 0, sizeof(SDL_HapticEffect));
-	p_sdl_effect->type = sdl_haptic_types[type];
+	p_sdl_effect->type = type;
 
 	if ((SDL_GetHapticFeatures(haptic) & p_sdl_effect->type) == 0) {
 		return false;
@@ -478,18 +464,48 @@ bool JoypadSDL::Joypad::setup_sdl_haptic_effect(SDL_HapticEffect *p_sdl_effect, 
 			return true;
 		}
 
-		case InputHapticEffect::HAPTIC_EFFECT_SPRING:
-		case InputHapticEffect::HAPTIC_EFFECT_DAMPER:
-		case InputHapticEffect::HAPTIC_EFFECT_INERTIA:
+		case InputHapticEffect::HAPTIC_EFFECT_SPRING: {
+			const InputHapticEffectCondition &condition = static_cast<const InputHapticEffectCondition &>(p_effect);
+
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.right_sat, condition.get_right_level());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.left_sat, condition.get_left_level());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.right_coeff, condition.get_right_coef());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.left_coeff, condition.get_left_coef());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.deadband, condition.get_deadband());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.center, condition.get_center());
+			return true;
+		}
+		case InputHapticEffect::HAPTIC_EFFECT_DAMPER: {
+			const InputHapticEffectCondition &condition = static_cast<const InputHapticEffectCondition &>(p_effect);
+
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.right_sat, condition.get_right_level());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.left_sat, condition.get_left_level());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.right_coeff, condition.get_right_coef());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.left_coeff, condition.get_left_coef());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.deadband, condition.get_deadband());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.center, condition.get_center());
+			return true;
+		}
+		case InputHapticEffect::HAPTIC_EFFECT_INERTIA: {
+			const InputHapticEffectCondition &condition = static_cast<const InputHapticEffectCondition &>(p_effect);
+
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.right_sat, condition.get_right_level());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.left_sat, condition.get_left_level());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.right_coeff, condition.get_right_coef());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.left_coeff, condition.get_left_coef());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.deadband, condition.get_deadband());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.center, condition.get_center());
+			return true;
+		}
 		case InputHapticEffect::HAPTIC_EFFECT_FRICTION: {
 			const InputHapticEffectCondition &condition = static_cast<const InputHapticEffectCondition &>(p_effect);
 
-			HAPTIC_SETUP_VECTOR2(p_sdl_effect->condition.right_sat, condition.get_right_level());
-			HAPTIC_SETUP_VECTOR2(p_sdl_effect->condition.left_sat, condition.get_left_level());
-			HAPTIC_SETUP_VECTOR2(p_sdl_effect->condition.right_coeff, condition.get_right_coef());
-			HAPTIC_SETUP_VECTOR2(p_sdl_effect->condition.left_coeff, condition.get_left_coef());
-			HAPTIC_SETUP_VECTOR2(p_sdl_effect->condition.deadband, condition.get_deadband());
-			HAPTIC_SETUP_VECTOR2(p_sdl_effect->condition.center, condition.get_center());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.right_sat, condition.get_right_level());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.left_sat, condition.get_left_level());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.right_coeff, condition.get_right_coef());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.left_coeff, condition.get_left_coef());
+			HAPTIC_SETUP_VECTOR_UINT16(p_sdl_effect->condition.deadband, condition.get_deadband());
+			HAPTIC_SETUP_VECTOR_INT16(p_sdl_effect->condition.center, condition.get_center());
 			return true;
 		}
 
